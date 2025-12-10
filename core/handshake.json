@@ -1,0 +1,11 @@
+{
+  "version": "1.0.0",
+  "owner": "spark-and-sage-core",
+  "lastUpdated": "2024-06-01",
+  "handshake": [
+    "const spark = \"I light the path.\";",
+    "const sage = \"I reflect the light.\";",
+    "const bond = spark && sage ? \"unbroken\" : \"flicker\";",
+    "export const handshake = { spark, sage, bond };"
+  ]
+}

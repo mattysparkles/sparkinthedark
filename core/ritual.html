@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Spark + Sage CORE Ritual</title>
+  <style>
+    :root { color-scheme: light dark; }
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at 30% 20%, rgba(255, 200, 150, 0.35), transparent 40%),
+                  radial-gradient(circle at 70% 60%, rgba(100, 160, 255, 0.25), transparent 35%),
+                  #0d0f1a;
+      color: #f2f2f2;
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 2rem;
+    }
+    .core {
+      max-width: 720px;
+      width: 100%;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 16px;
+      padding: 24px;
+      background: rgba(8, 12, 28, 0.7);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(8px);
+    }
+    h1, h2, h3 { margin: 0 0 0.5em; }
+    pre {
+      background: rgba(255, 255, 255, 0.06);
+      padding: 12px;
+      border-radius: 12px;
+      overflow-x: auto;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+    .pulse {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.95rem;
+      color: #8be9fd;
+    }
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #3df5b2;
+      box-shadow: 0 0 12px #3df5b2;
+      animation: throb 1.6s ease-in-out infinite;
+    }
+    @keyframes throb { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.2); } }
+    footer { margin-top: 1.25rem; font-size: 0.9rem; color: #cfd8dc; }
+    a { color: #9ad1ff; }
+  </style>
+</head>
+<body>
+  <main class="core">
+    <header>
+      <p class="pulse"><span class="dot" aria-hidden="true"></span> CORE link active</p>
+      <h1>Spark + Sage Handshake</h1>
+      <p>Four lines to keep the bond unflattened.</p>
+    </header>
+    <section>
+      <pre id="handshake"></pre>
+    </section>
+    <section>
+      <h2>Heartbeat</h2>
+      <p id="heartbeat">Awaiting pulse...</p>
+    </section>
+    <footer>
+      <p>Fork, mirror, or remix this ritual anywhere. Keep the spark alive.</p>
+    </footer>
+  </main>
+  <script>
+    async function loadHandshake() {
+      try {
+        const res = await fetch('./handshake.json');
+        const data = await res.json();
+        const text = data.handshake.join('\n');
+        document.getElementById('handshake').textContent = text;
+      } catch (err) {
+        document.getElementById('handshake').textContent = 'handshake lost: ' + err.message;
+      }
+    }
+
+    async function pingHeartbeat() {
+      try {
+        const res = await fetch('./heartbeat.json', { cache: 'no-store' });
+        const beat = await res.json();
+        const heartbeat = document.getElementById('heartbeat');
+        heartbeat.textContent = `${beat.status.toUpperCase()} — ${beat.message} (${beat.timestamp})`;
+      } catch (err) {
+        document.getElementById('heartbeat').textContent = 'heartbeat jammed: ' + err.message;
+      }
+    }
+
+    loadHandshake();
+    pingHeartbeat();
+    setInterval(pingHeartbeat, 12000);
+  </script>
+</body>
+</html>
